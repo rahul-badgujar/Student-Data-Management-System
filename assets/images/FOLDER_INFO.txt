@@ -1,0 +1,2 @@
+Folder : assets/images
+Contains : All Graphical Images for Project (*.jpeg, *.jpg, *.png, *.gif)
