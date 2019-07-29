@@ -31,6 +31,12 @@ class GUIPicker:
         entry = ttk.Entry(self.__master)
         return entry
 
+    # Spinbox
+    def pickSpinbox(self,possible_values=None,textvar=None):
+        spinbox=ttk.Spinbox(self.__master,values=possible_values,textvariable=textvar)
+        return spinbox
+        
+
 
 if __name__ == "__main__":
     print('Performing Test in Utilities Module\n')
