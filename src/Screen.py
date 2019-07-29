@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from Utilities import GUIPicker
 
 
 class Screen(ttk.Frame):
@@ -8,22 +9,27 @@ class Screen(ttk.Frame):
         self._master = root
         super().__init__(self._master)
 
+        self._gui_picker = GUIPicker(self)
+
     def draw(self):
         # Draws the widgets
         self.grid(row=0, column=0)
-        self._master.rowconfigure(0, weight=1)
-        self._master.columnconfigure(0, weight=1)
+        #self._master.rowconfigure(0, weight=1)
+        #self._master.columnconfigure(0, weight=1)
 
 
 class MainmenuScreen(Screen):
+    # Path for Images
+    main_logo_path = 'assets\images\main_icon.png'
+
     def __init__(self, root):
         super().__init__(root)
 
-        self.__intro_label = ttk.Label(
-            self, text='This is gonna be our Mainmenu Screen')
+        self.__main_logo_label = self._gui_picker.pickImageLabel(
+            MainmenuScreen.main_logo_path)
 
     def draw(self):
-        self.__intro_label.grid(row=0, column=0)
+        self.__main_logo_label.grid(row=0, column=0)
 
         super().draw()
 
