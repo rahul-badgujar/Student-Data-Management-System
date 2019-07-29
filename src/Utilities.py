@@ -8,8 +8,7 @@ class GUIPicker:
         self.__master = master
 
     # Image Label
-    def pickImageLabel(self, path):
-        img = self.pickImage(path)
+    def pickImageLabel(self, img):
         label = ttk.Label(self.__master, image=img)
         label.image = img
         return label
@@ -19,11 +18,10 @@ class GUIPicker:
         return img
 
     # Image Button
-    def pickImageButton(self, imagePath, callback=None, cursorType='hand2'):
-        buttonImage = ImageTk.PhotoImage(Image.open(imagePath))
-        button = ttk.Button(self.__master, image=buttonImage,
+    def pickImageButton(self, img, callback=None, cursorType='hand2'):
+        button = ttk.Button(self.__master, image=img,
                             cursor=cursorType, command=callback)
-        button.image = buttonImage
+        button.image = img
         return button
 
     # Entry

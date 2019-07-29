@@ -14,13 +14,15 @@ class Screen(ttk.Frame):
     def draw(self):
         # Draws the widgets
         self.grid(row=0, column=0)
-        self._master.rowconfigure(0, weight=1)
-        self._master.columnconfigure(0, weight=1)
+        #self._master.rowconfigure(0, weight=1)
+        #self._master.columnconfigure(0, weight=1)
 
 
 class MainmenuScreen(Screen):
     # Path for Images
     main_logo_path = 'assets\images\main_icon.png'
+    search_icon_normal_path = 'assets\images\search_icon_normal.png'
+    search_icon_mouseover_path = 'assets\images\search_icon_mouseover.png'
 
     # Useful Values Tuples
     search_type_spinbox_values = (
@@ -30,8 +32,10 @@ class MainmenuScreen(Screen):
         super().__init__(root)
 
         # Main Logo
-        self.__main_logo_label = self._gui_picker.pickImageLabel(
+        self.__main_logo_image = self._gui_picker.pickImage(
             MainmenuScreen.main_logo_path)
+        self.__main_logo_label = self._gui_picker.pickImageLabel(
+            self.__main_logo_image)
 
         # Search Type Spinbox
         self.__search_type_textvar = StringVar(
@@ -45,15 +49,31 @@ class MainmenuScreen(Screen):
         self.__search_entry = self._gui_picker.pickEntry(
             self.__search_entry_textvar)
 
+        # Search Button
+        self.__search_button_image_normal = self._gui_picker.pickImage(
+            MainmenuScreen.search_icon_normal_path)
+        self.__search_button_image_mouseover = self._gui_picker.pickImage(
+            MainmenuScreen.search_icon_mouseover_path)
+        self.__search_button = self._gui_picker.pickImageButton(
+            self.__search_button_image_normal)
+        self.__search_button.bind('<Enter>', lambda e: self.__search_button.configure(
+            image=self.__search_button_image_mouseover))
+        self.__search_button.bind('<Leave>', lambda e: self.__search_button.configure(
+            image=self.__search_button_image_normal))
+
     def draw(self):
         # Main Logo
-        self.__main_logo_label.grid(row=0, column=2, columnspan=2)
+        self.__main_logo_label.grid(
+            row=0, column=0, columnspan=4, pady=40)
 
         # Search Type Spinbox
-        self.__search_type_spinbox.grid(row=1, column=0)
+        self.__search_type_spinbox.grid(row=2, column=0)
 
         # Search Entry
-        self.__search_entry.grid(row=1, column=1, columnspan=2)
+        self.__search_entry.grid(row=2, column=1, columnspan=2)
+
+        # Search Button
+        self.__search_button.grid(row=2, column=3)
 
         super().draw()
 
