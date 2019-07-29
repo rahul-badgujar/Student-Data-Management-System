@@ -33,6 +33,12 @@ class GUIPicker:
     def pickSpinbox(self,possible_values=None,textvar=None):
         spinbox=ttk.Spinbox(self.__master,values=possible_values,textvariable=textvar)
         return spinbox
+
+    # Combobox
+    def pickCombobox(self, possible_values=None, textvar=None):
+        combobox = ttk.Combobox(
+            self.__master, values=possible_values, textvariable=textvar)
+        return combobox
         
 
 
