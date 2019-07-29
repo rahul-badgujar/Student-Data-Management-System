@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from Screen import MainmenuScreen
 
 
 class SystemManager:
@@ -12,8 +13,13 @@ class SystemManager:
         self._main_window = Tk()
         self._main_window.title(self._system_name)
         self._main_window.geometry(self._system_geometry)
+        self._main_window.resizable(False,False)
+
+        # Main Menu Screen
+        self.__mainmenu_screen=MainmenuScreen(self._main_window)
 
     def run(self):
+        self.__mainmenu_screen.draw()
         # Run the mainloop for Window
         self._main_window.mainloop()
 

@@ -19,8 +19,8 @@ class GUIPicker:
 
     # Image Button
     def pickImageButton(self, img, callback=None, cursorType='hand2'):
-        button = ttk.Button(self.__master, image=img,
-                            cursor=cursorType, command=callback)
+        button = Button(self.__master, image=img,
+                            cursor=cursorType, command=callback,bd=0)
         button.image = img
         return button
 
