@@ -20,7 +20,7 @@ class SystemManager:
 
 # for Unit Tests
 if __name__ == "__main__":
-    print('Running System Module\n')
+    print('Performing Test in System Module\n')
 
     test_system = SystemManager(
         'Student Data Management System', '800x600')

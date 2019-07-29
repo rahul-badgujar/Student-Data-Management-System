@@ -29,6 +29,8 @@ class MainmenuScreen(Screen):
 
 
 if __name__ == "__main__":
+    print('Performing Test in Screen Module\n')
+
     temp_window = Tk()
     temp_window.geometry('800x600')
     test_screen = MainmenuScreen(temp_window)
