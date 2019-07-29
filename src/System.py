@@ -22,6 +22,6 @@ class SystemManager:
 if __name__ == "__main__":
     print('Running System Module\n')
 
-    test = SystemManager(
+    test_system = SystemManager(
         'Student Data Management System', '800x600')
-    test.run()
+    test_system.run()
