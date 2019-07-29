@@ -30,7 +30,7 @@ class MainmenuScreen(Screen):
     exit_icon_mouseover_path = 'assets\images\exit_icon_mouseover.png'
 
     # Useful Values Tuples
-    search_type_spinbox_values = (
+    search_type_combobox_values = (
         'Roll Number', 'Name', 'Year of Joining')
 
     def __init__(self, root):
@@ -42,17 +42,24 @@ class MainmenuScreen(Screen):
         self.__main_logo_label = self._gui_picker.pickImageLabel(
             self.__main_logo_image)
 
-        # Search Type Spinbox
+        # Search Type Combobox
         self.__search_type_textvar = StringVar(
-            None, MainmenuScreen.search_type_spinbox_values[0])
-        self.__search_type_spinbox = self._gui_picker.pickSpinbox(
-            MainmenuScreen.search_type_spinbox_values, self.__search_type_textvar)
-        self.__search_type_spinbox.configure()
+            None, MainmenuScreen.search_type_combobox_values[0])
+        self.__search_type_combobox = self._gui_picker.pickCombobox(
+            MainmenuScreen.search_type_combobox_values, self.__search_type_textvar)
+        self.__search_type_combobox.configure(background='#660066', foreground='black', font=(
+            "Helvetica", "10", "bold"), justify=CENTER)
 
         # Search Entry
-        self.__search_entry_textvar = StringVar(None, 'Enter here')
+        self.__search_entry_textvar = StringVar(
+            None, 'Enter '+self.__search_type_textvar.get()+' here')
         self.__search_entry = self._gui_picker.pickEntry(
             self.__search_entry_textvar)
+        self.__search_entry.configure(
+            font=("Helvetica", "12"), background='#b366ff', textvariable=self.__search_entry_textvar, justify=CENTER)
+        self.__search_type_combobox.bind(
+            '<<ComboboxSelected>>', lambda e: self.__search_entry_textvar.set('Enter '+self.__search_type_textvar.get()+' here'))
+        self.__search_entry.bind("<Button-1>",lambda e: self.__search_entry_textvar.set(''))
 
         # Search Button
         self.__search_button_image = self._gui_picker.pickImage(
@@ -114,8 +121,8 @@ class MainmenuScreen(Screen):
             relx=0.3, rely=0.02, relheight=0.45, relwidth=.5)
 
         # Search Type Spinbox
-        self.__search_type_spinbox.place(
-            relx=0.16, rely=0.55, relheight=0.06, relwidth=0.14)
+        self.__search_type_combobox.place(
+            relx=0.16, rely=0.55, relheight=0.06, relwidth=0.16)
 
         # Search Entry
         self.__search_entry.place(
