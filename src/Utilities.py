@@ -27,8 +27,8 @@ class GUIPicker:
         return button
 
     # Entry
-    def pickEntry(self):
-        entry = ttk.Entry(self.__master)
+    def pickEntry(self,textvar=None):
+        entry = ttk.Entry(self.__master,foreground='grey',textvariable=textvar)
         return entry
 
     # Spinbox

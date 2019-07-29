@@ -34,16 +34,26 @@ class MainmenuScreen(Screen):
             MainmenuScreen.main_logo_path)
 
         # Search Type Spinbox
-        self.__search_type_textvar = StringVar(None,MainmenuScreen.search_type_spinbox_values[0])
+        self.__search_type_textvar = StringVar(
+            None, MainmenuScreen.search_type_spinbox_values[0])
         self.__search_type_spinbox = self._gui_picker.pickSpinbox(
             MainmenuScreen.search_type_spinbox_values, self.__search_type_textvar)
+        self.__search_type_spinbox.configure(width=25)
+
+        # Search Entry
+        self.__search_entry_textvar = StringVar(None, 'Enter here')
+        self.__search_entry = self._gui_picker.pickEntry(
+            self.__search_entry_textvar)
 
     def draw(self):
         # Main Logo
-        self.__main_logo_label.grid(row=0, column=2,columnspan=2)
+        self.__main_logo_label.grid(row=0, column=2, columnspan=2)
 
         # Search Type Spinbox
-        self.__search_type_spinbox.grid(row=1,column=0)
+        self.__search_type_spinbox.grid(row=1, column=0)
+
+        # Search Entry
+        self.__search_entry.grid(row=1, column=1, columnspan=2)
 
         super().draw()
 
