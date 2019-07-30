@@ -55,7 +55,7 @@ class MainmenuScreen(Screen):
             self.__main_logo_image)
 
         # Search Entry
-        self.__search_entry_textvar = StringVar(None,'Enter Roll No here')
+        self.__search_entry_textvar = StringVar(None, 'Enter Roll No here')
         self.__search_entry = self._gui_picker.pickEntry(
             self.__search_entry_textvar)
         self.__search_entry.configure(
@@ -74,12 +74,13 @@ class MainmenuScreen(Screen):
             MainmenuScreen.search_type_combobox_values, self.__search_type_textvar)
         self.__search_type_combobox.configure(background='#660066', foreground='black', font=(
             "Helvetica", "10", "bold"), justify=CENTER)
+
         def searchtypeComboboxSelectedCallback():
             self.__search_entry_textvar.set(
                 'Enter '+self.__search_type_textvar.get()+' here')
             self.__search_entry.configure(foreground='grey')
         self.__search_type_combobox.bind(
-            '<<ComboboxSelected>>', lambda e: searchtypeComboboxSelectedCallback() )
+            '<<ComboboxSelected>>', lambda e: searchtypeComboboxSelectedCallback())
 
         # Search Button
         self.__search_button_image = self._gui_picker.pickImage(
@@ -149,21 +150,22 @@ class MainmenuScreen(Screen):
         data_to_send = ['MAINMENU_SCREEN']
         if action_code is MainmenuScreen.onscreen_actions[0]:
             data_to_send.append('SEARCH')
-            search_type=self.__search_type_textvar.get()
-            search_entry=self.__search_entry_textvar.get()
+            search_type = self.__search_type_textvar.get()
+            search_entry = self.__search_entry_textvar.get()
             if search_entry is not '':
                 if search_type in MainmenuScreen.search_type_combobox_values:
                     if search_type == MainmenuScreen.search_type_combobox_values[0] or search_type == MainmenuScreen.search_type_combobox_values[2]:
                         try:
-                            temp_var=int(search_entry)
+                            temp_var = int(search_entry)
                         except ValueError:
                             messagebox.showerror(
                                 'Invalid '+search_type, search_type+' must be in Digits only')
                             return None
-                    data_to_send.append((search_type,search_entry))
+                    data_to_send.append((search_type, search_entry))
                     self._data_return_callback(data_to_send)
                 else:
-                    messagebox.showerror('Invalid Query','Search type is not valid')
+                    messagebox.showerror(
+                        'Invalid Query', 'Search type is not valid')
         elif action_code is MainmenuScreen.onscreen_actions[1]:
             data_to_send.append('ADD')
             self._data_return_callback(data_to_send)
@@ -176,8 +178,6 @@ class MainmenuScreen(Screen):
         elif action_code is MainmenuScreen.onscreen_actions[4]:
             data_to_send.append('EXIT')
             self._data_return_callback(data_to_send)
-
-        
 
     def draw(self):
         # Main Logo
@@ -214,43 +214,70 @@ class MainmenuScreen(Screen):
 
         super().draw()
 
+
 class AddDataScreen(Screen):
     # Images path
-    submit_icon_normal_path='assets\images\submit_icon_normal.png'
-    reset_icon_normal_path='assets\images\\reset_icon_normal.png'
+    submit_icon_normal_path = 'assets\images\submit_icon_normal.png'
+    submit_icon_mouseover_path = 'assets\images\submit_icon_mouseover.png'
+    reset_icon_normal_path = 'assets\images\\reset_icon_normal.png'
+    reset_icon_mouseover_path = 'assets\images\\reset_icon_mouseover.png'
     cancel_icon_normal_path = 'assets\images\cancel_icon_normal.png'
+    cancel_icon_mouseover_path = 'assets\images\cance_icon_mouseover.png'
 
     def __init__(self, root, callback):
         super().__init__(root, callback)
 
         # Cancel Button
-        self.__cancel_button_image_normal=self._gui_picker.pickImage(AddDataScreen.cancel_icon_normal_path)
-        self.__cancel_button=self._gui_picker.pickImageButton(self.__cancel_button_image_normal)
+        self.__cancel_button_image_normal = self._gui_picker.pickImage(
+            AddDataScreen.cancel_icon_normal_path)
+        self.__cancel_button_image_mouseover = self._gui_picker.pickImage(
+            AddDataScreen.cancel_icon_mouseover_path)
+        self.__cancel_button = self._gui_picker.pickImageButton(
+            self.__cancel_button_image_normal)
+        self.__cancel_button.bind('<Enter>', lambda e: self.__cancel_button.configure(
+            image=self.__cancel_button_image_mouseover))
+        self.__cancel_button.bind('<Leave>', lambda e: self.__cancel_button.configure(
+            image=self.__cancel_button_image_normal))
 
         # Submit  Button
         self.__submit_button_image_normal = self._gui_picker.pickImage(
             AddDataScreen.submit_icon_normal_path)
+        self.__submit_button_image_mouseover = self._gui_picker.pickImage(
+            AddDataScreen.submit_icon_mouseover_path)
         self.__submit_button = self._gui_picker.pickImageButton(
             self.__submit_button_image_normal)
+        self.__submit_button.bind('<Enter>', lambda e: self.__submit_button.configure(
+            image=self.__submit_button_image_mouseover))
+        self.__submit_button.bind('<Leave>', lambda e: self.__submit_button.configure(
+            image=self.__submit_button_image_normal))
 
         # Reset Button
         self.__reset_button_image_normal = self._gui_picker.pickImage(
             AddDataScreen.reset_icon_normal_path)
+        self.__reset_button_image_mouseover = self._gui_picker.pickImage(
+            AddDataScreen.reset_icon_mouseover_path)
         self.__reset_button = self._gui_picker.pickImageButton(
             self.__reset_button_image_normal)
+        self.__reset_button.bind('<Enter>', lambda e: self.__reset_button.configure(
+            image=self.__reset_button_image_mouseover))
+        self.__reset_button.bind('<Leave>', lambda e: self.__reset_button.configure(
+            image=self.__reset_button_image_normal))
 
     def draw(self):
         # Cancel Button
-        self.__cancel_button.place(relx=0.2,rely=0.01,relwidth=0.07,relheight=0.09)
+        self.__cancel_button.place(
+            relx=0.2, rely=0.01, relwidth=0.07, relheight=0.09)
 
         # Submit Button
-        self.__submit_button.place(relx=0.8-0.07,rely=0.01,relwidth=0.07,relheight=0.09)
+        self.__submit_button.place(
+            relx=0.8-0.07, rely=0.01, relwidth=0.07, relheight=0.09)
 
         # Reset Button
         self.__reset_button.place(
             relx=0.465, rely=0.01, relwidth=0.07, relheight=0.09)
 
-        super().draw()    
+        super().draw()
+
 
 if __name__ == "__main__":
     print('Performing Test in Screen Module\n')
