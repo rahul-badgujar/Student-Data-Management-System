@@ -269,23 +269,28 @@ class AddDataScreen(Screen):
             self.__canvas_scrollable, command=self.__canvas_scrollable.yview)
         self.__canvas_scrollable.configure(yscrollcommand=self.__scrollbar.set)
 
+        # Frame inside Canvas for Data Entry Fields
+        self.__dataentry_frame = Frame(self.__canvas_scrollable)
+
     def draw(self):
         # Cancel Button
         self.__cancel_button.place(
-            relx=0.2, rely=0.01, relwidth=0.07, relheight=0.09)
+            relx=0.2, rely=0.005, relwidth=0.07, relheight=0.09)
 
         # Submit Button
         self.__submit_button.place(
-            relx=0.8-0.07, rely=0.01, relwidth=0.07, relheight=0.09)
+            relx=0.8-0.07, rely=0.005, relwidth=0.07, relheight=0.09)
 
         # Reset Button
         self.__reset_button.place(
-            relx=0.465, rely=0.01, relwidth=0.07, relheight=0.09)
+            relx=0.465, rely=0.005, relwidth=0.07, relheight=0.09)
 
         # Canvas and Data Entry Frame
         self.__canvas_scrollable.place(
-            relx=0.0, rely=0.1, relwidth=1, relheight=0.9)
-        self.__scrollbar.pack(side=RIGHT, fill=Y)
+            relx=0.025, rely=0.1, relwidth=0.975, relheight=0.9)
+        self.__scrollbar.place(relx=0.975, rely=0, relwidth=0.025, relheight=1)
+        self.__dataentry_frame.place(
+            relx=0, rely=0, relwidth=0.975, relheight=1)
 
         super().draw()
 
