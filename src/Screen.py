@@ -214,6 +214,12 @@ class MainmenuScreen(Screen):
 
         super().draw()
 
+class AddDataScreen(Screen):
+
+    def __init__(self, root, callback):
+        super().__init__(root, callback)
+
+        
 
 if __name__ == "__main__":
     print('Performing Test in Screen Module\n')
