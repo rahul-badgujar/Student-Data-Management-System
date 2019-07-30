@@ -59,7 +59,7 @@ class MainmenuScreen(Screen):
         self.__search_entry = self._gui_picker.pickEntry(
             self.__search_entry_textvar)
         self.__search_entry.configure(
-            font=("Helvetica", "12", "bold"), background='#b366ff', textvariable=self.__search_entry_textvar, justify=CENTER)
+            font=("Helvetica", "12", "bold"), textvariable=self.__search_entry_textvar, justify=CENTER)
 
         def searchEntryCallback():
             self.__search_entry_textvar.set('')
