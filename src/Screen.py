@@ -215,11 +215,42 @@ class MainmenuScreen(Screen):
         super().draw()
 
 class AddDataScreen(Screen):
+    # Images path
+    submit_icon_normal_path='assets\images\submit_icon_normal.png'
+    reset_icon_normal_path='assets\images\\reset_icon_normal.png'
+    cancel_icon_normal_path = 'assets\images\cancel_icon_normal.png'
 
     def __init__(self, root, callback):
         super().__init__(root, callback)
 
-        
+        # Cancel Button
+        self.__cancel_button_image_normal=self._gui_picker.pickImage(AddDataScreen.cancel_icon_normal_path)
+        self.__cancel_button=self._gui_picker.pickImageButton(self.__cancel_button_image_normal)
+
+        # Submit  Button
+        self.__submit_button_image_normal = self._gui_picker.pickImage(
+            AddDataScreen.submit_icon_normal_path)
+        self.__submit_button = self._gui_picker.pickImageButton(
+            self.__submit_button_image_normal)
+
+        # Reset Button
+        self.__reset_button_image_normal = self._gui_picker.pickImage(
+            AddDataScreen.reset_icon_normal_path)
+        self.__reset_button = self._gui_picker.pickImageButton(
+            self.__reset_button_image_normal)
+
+    def draw(self):
+        # Cancel Button
+        self.__cancel_button.place(relx=0.2,rely=0.01,relwidth=0.07,relheight=0.09)
+
+        # Submit Button
+        self.__submit_button.place(relx=0.8-0.07,rely=0.01,relwidth=0.07,relheight=0.09)
+
+        # Reset Button
+        self.__reset_button.place(
+            relx=0.465, rely=0.01, relwidth=0.07, relheight=0.09)
+
+        super().draw()    
 
 if __name__ == "__main__":
     print('Performing Test in Screen Module\n')
@@ -231,6 +262,6 @@ if __name__ == "__main__":
     def tempcall(data):
         print(data)
 
-    test_screen = MainmenuScreen(temp_window, tempcall)
+    test_screen = AddDataScreen(temp_window, tempcall)
     test_screen.draw()
     temp_window.mainloop()
