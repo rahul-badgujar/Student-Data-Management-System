@@ -13,17 +13,18 @@ class SystemManager:
         self._main_window = Tk()
         self._main_window.title(self._system_name)
         self._main_window.geometry(self._system_geometry)
-        self._main_window.resizable(False,False)
+        self._main_window.resizable(False, False)
 
         # Main Menu Screen
-        self.__mainmenu_screen=MainmenuScreen(self._main_window,self.screensReturnDataHandler)
+        self.__mainmenu_screen = MainmenuScreen(
+            self._main_window, self.screensReturnDataHandler)
 
     def run(self):
         self.__mainmenu_screen.draw()
         # Run the mainloop for Window
         self._main_window.mainloop()
 
-    def screensReturnDataHandler(self,data):
+    def screensReturnDataHandler(self, data):
         self.__mainmenu_screen.clean()
         if data[0] is 'MAINMENU_SCREEN':
             if data[1] is 'EXIT':
@@ -31,14 +32,13 @@ class SystemManager:
             elif data[1] is 'SEARCH':
                 search_type = data[2][0]
                 search_entry = data[2][1]
-                print(search_type,search_entry)
+                print(search_type, search_entry)
             elif data[1] is 'ADD':
                 print('No handling implemented yet for '+data[1])
             elif data[1] is 'MODIFY':
                 print('No handling implemented yet for '+data[1])
             elif data[1] is 'DELETE':
                 print('No handling implemented yet for '+data[1])
-                
 
 
 # for Unit Tests

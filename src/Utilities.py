@@ -20,18 +20,20 @@ class GUIPicker:
     # Image Button
     def pickImageButton(self, img, callback=None, cursorType='hand2'):
         button = Button(self.__master, image=img,
-                            cursor=cursorType, command=callback,bd=0)
+                        cursor=cursorType, command=callback, bd=0)
         button.image = img
         return button
 
     # Entry
-    def pickEntry(self,textvar=None):
-        entry = ttk.Entry(self.__master,foreground='grey',textvariable=textvar)
+    def pickEntry(self, textvar=None):
+        entry = ttk.Entry(self.__master, foreground='grey',
+                          textvariable=textvar)
         return entry
 
     # Spinbox
-    def pickSpinbox(self,possible_values=None,textvar=None):
-        spinbox=ttk.Spinbox(self.__master,values=possible_values,textvariable=textvar)
+    def pickSpinbox(self, possible_values=None, textvar=None):
+        spinbox = ttk.Spinbox(
+            self.__master, values=possible_values, textvariable=textvar)
         return spinbox
 
     # Combobox
@@ -39,7 +41,6 @@ class GUIPicker:
         combobox = ttk.Combobox(
             self.__master, values=possible_values, textvariable=textvar)
         return combobox
-        
 
 
 if __name__ == "__main__":
