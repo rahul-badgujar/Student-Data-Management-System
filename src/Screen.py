@@ -1,19 +1,30 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from Utilities import GUIPicker
 
 
 class Screen(ttk.Frame):
-    def __init__(self, root):
+    def __init__(self, root, callback):
         # Configure the Parent Window
         self._master = root
         super().__init__(self._master)
 
         self._gui_picker = GUIPicker(self)
+        self._data_return_callback = callback
 
     def draw(self):
         # Draws the widgets
         self.place(relx=0, rely=0, relwidth=1, relheight=1)
+
+    def screenActionHandler(self, action_code):
+        pass
+
+    def hide(self):
+        self.pack_forget()
+
+    def clean(self):
+        self.destroy()
 
 
 class MainmenuScreen(Screen):
@@ -32,15 +43,29 @@ class MainmenuScreen(Screen):
     # Useful Values Tuples
     search_type_combobox_values = (
         'Roll Number', 'Name', 'Year of Joining')
+    onscreen_actions = ('SEARCH', 'ADD', 'MODIFY', 'DELETE', 'EXIT')
 
-    def __init__(self, root):
-        super().__init__(root)
+    def __init__(self, root, callback):
+        super().__init__(root, callback)
 
         # Main Logo
         self.__main_logo_image = self._gui_picker.pickImage(
             MainmenuScreen.main_logo_path)
         self.__main_logo_label = self._gui_picker.pickImageLabel(
             self.__main_logo_image)
+
+        # Search Entry
+        self.__search_entry_textvar = StringVar(None,'Enter Roll No here')
+        self.__search_entry = self._gui_picker.pickEntry(
+            self.__search_entry_textvar)
+        self.__search_entry.configure(
+            font=("Helvetica", "12", "bold"), background='#b366ff', textvariable=self.__search_entry_textvar, justify=CENTER)
+
+        def searchEntryCallback():
+            self.__search_entry_textvar.set('')
+            self.__search_entry.configure(foreground='black')
+        self.__search_entry.bind(
+            "<Button-1>", lambda e: searchEntryCallback())
 
         # Search Type Combobox
         self.__search_type_textvar = StringVar(
@@ -49,23 +74,20 @@ class MainmenuScreen(Screen):
             MainmenuScreen.search_type_combobox_values, self.__search_type_textvar)
         self.__search_type_combobox.configure(background='#660066', foreground='black', font=(
             "Helvetica", "10", "bold"), justify=CENTER)
-
-        # Search Entry
-        self.__search_entry_textvar = StringVar(
-            None, 'Enter '+self.__search_type_textvar.get()+' here')
-        self.__search_entry = self._gui_picker.pickEntry(
-            self.__search_entry_textvar)
-        self.__search_entry.configure(
-            font=("Helvetica", "12"), background='#b366ff', textvariable=self.__search_entry_textvar, justify=CENTER)
+        def searchtypeComboboxSelectedCallback():
+            self.__search_entry_textvar.set(
+                'Enter '+self.__search_type_textvar.get()+' here')
+            self.__search_entry.configure(foreground='grey')
         self.__search_type_combobox.bind(
-            '<<ComboboxSelected>>', lambda e: self.__search_entry_textvar.set('Enter '+self.__search_type_textvar.get()+' here'))
-        self.__search_entry.bind("<Button-1>",lambda e: self.__search_entry_textvar.set(''))
+            '<<ComboboxSelected>>', lambda e: searchtypeComboboxSelectedCallback() )
 
         # Search Button
         self.__search_button_image = self._gui_picker.pickImage(
             MainmenuScreen.search_icon_path)
         self.__search_button = self._gui_picker.pickImageButton(
             self.__search_button_image)
+        self.__search_button.bind(
+            '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[0]))
 
         # Add Button
         self.__add_button_image_normal = self._gui_picker.pickImage(
@@ -78,6 +100,8 @@ class MainmenuScreen(Screen):
             image=self.__add_button_image_mouseover))
         self.__add_button.bind('<Leave>', lambda e: self.__add_button.configure(
             image=self.__add_button_image_normal))
+        self.__add_button.bind(
+            '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[1]))
 
         # Modify Button
         self.__modify_button_image_normal = self._gui_picker.pickImage(
@@ -90,6 +114,8 @@ class MainmenuScreen(Screen):
             image=self.__modify_button_image_mouseover))
         self.__modify_button.bind('<Leave>', lambda e: self.__modify_button.configure(
             image=self.__modify_button_image_normal))
+        self.__modify_button.bind(
+            '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[2]))
 
         # Delete Button
         self.__delete_button_image_normal = self._gui_picker.pickImage(
@@ -102,6 +128,8 @@ class MainmenuScreen(Screen):
             image=self.__delete_button_image_mouseover))
         self.__delete_button.bind('<Leave>', lambda e: self.__delete_button.configure(
             image=self.__delete_button_image_normal))
+        self.__delete_button.bind(
+            '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[3]))
 
         # Exit Button
         self.__exit_button_image_normal = self._gui_picker.pickImage(
@@ -114,6 +142,22 @@ class MainmenuScreen(Screen):
             image=self.__exit_button_image_mouseover))
         self.__exit_button.bind('<Leave>', lambda e: self.__exit_button.configure(
             image=self.__exit_button_image_normal))
+        self.__exit_button.bind(
+            '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[4]))
+
+    def screenActionHandler(self, action_code):
+        if action_code is MainmenuScreen.onscreen_actions[4]:
+            self._data_return_callback((action_code,None))
+        elif action_code is MainmenuScreen.onscreen_actions[0]:
+            search_type=self.__search_type_textvar.get()
+            search_entry=self.__search_entry_textvar.get()
+            if search_entry is not '':
+                if search_type in MainmenuScreen.search_type_combobox_values:
+                    self._data_return_callback((action_code,(search_type,search_entry)))
+                else:
+                    messagebox.showerror('Invalid Query','Search type is not valid')
+
+        
 
     def draw(self):
         # Main Logo
@@ -157,6 +201,10 @@ if __name__ == "__main__":
     temp_window = Tk()
     temp_window.geometry('800x600')
     temp_window.resizable(False, False)
-    test_screen = MainmenuScreen(temp_window)
+
+    def tempcall(data):
+        print(data)
+
+    test_screen = MainmenuScreen(temp_window, tempcall)
     test_screen.draw()
     temp_window.mainloop()
