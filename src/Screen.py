@@ -42,7 +42,7 @@ class MainmenuScreen(Screen):
 
     # Useful Values Tuples
     search_type_combobox_values = (
-        'Roll Number', 'Name', 'Year of Joining')
+        'Roll Number', 'Name')
     onscreen_actions = ('SEARCH', 'ADD', 'MODIFY', 'DELETE', 'EXIT')
 
     def __init__(self, root, callback):
@@ -154,7 +154,7 @@ class MainmenuScreen(Screen):
             search_entry = self.__search_entry_textvar.get()
             if search_entry is not '':
                 if search_type in MainmenuScreen.search_type_combobox_values:
-                    if search_type == MainmenuScreen.search_type_combobox_values[0] or search_type == MainmenuScreen.search_type_combobox_values[2]:
+                    if search_type == MainmenuScreen.search_type_combobox_values[0]:
                         try:
                             temp_var = int(search_entry)
                         except ValueError:
