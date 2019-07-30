@@ -59,11 +59,11 @@ class MainmenuScreen(Screen):
         self.__search_entry = self._gui_picker.pickEntry(
             self.__search_entry_textvar)
         self.__search_entry.configure(
-            font=("Helvetica", "12", "bold"), textvariable=self.__search_entry_textvar, justify=CENTER)
+            font=("Helvetica", "12", "bold"), textvariable=self.__search_entry_textvar, justify=CENTER, fg='grey')
 
         def searchEntryCallback():
             self.__search_entry_textvar.set('')
-            self.__search_entry.configure(foreground='black')
+            self.__search_entry.configure(fg='black')
         self.__search_entry.bind(
             "<Button-1>", lambda e: searchEntryCallback())
 
@@ -224,6 +224,11 @@ class AddDataScreen(Screen):
     cancel_icon_normal_path = 'assets\images\cancel_icon_normal.png'
     cancel_icon_mouseover_path = 'assets\images\cance_icon_mouseover.png'
 
+    # Values Tuples
+    grade_combobox_values = ('I', 'II', 'III', 'IV',
+                             'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII')
+    division_combobox_values = ('A', 'B', 'C', 'D', 'E', 'F')
+
     def __init__(self, root, callback):
         super().__init__(root, callback)
 
@@ -270,7 +275,53 @@ class AddDataScreen(Screen):
         self.__canvas_scrollable.configure(yscrollcommand=self.__scrollbar.set)
 
         # Frame inside Canvas for Data Entry Fields
-        self.__dataentry_frame = Frame(self.__canvas_scrollable)
+        self.__dataentry_frame_bg = '#b3ffd9'
+        self.__dataentry_frame = Frame(
+            self.__canvas_scrollable, bg=self.__dataentry_frame_bg)
+
+        # GUIPicker for Frame to add widgets faster
+        frame_widget_picker = GUIPicker(self.__dataentry_frame)
+
+        # Roll No Entry
+        self.__rollno_label = frame_widget_picker.pickLabel('Roll Number * : ')
+        self.__rollno_label.configure(
+            font=("Helvetica", "10", "bold"), justify=LEFT)
+        self.__rollno_entry_textvar = StringVar()
+        self.__rollno_entry = frame_widget_picker.pickEntry(
+            self.__rollno_entry_textvar)
+        self.__rollno_entry.configure(font=("Helvetica", "10", "bold"))
+
+        # Full Name Entry
+        self.__fullname_label = frame_widget_picker.pickLabel('Full Name * : ')
+        self.__fullname_label.configure(
+            font=("Helvetica", "10", "bold"), justify=LEFT)
+        self.__fullname_entry_textvar = StringVar()
+        self.__fullname_entry = frame_widget_picker.pickEntry(
+            self.__fullname_entry_textvar)
+        self.__fullname_entry.configure(
+            font=("Helvetica", "10", "bold"), width=30)
+
+        # Grade Comboox
+        self.__grade_label = frame_widget_picker.pickLabel(
+            'Grade * : ')
+        self.__grade_label.configure(
+            font=("Helvetica", "10", "bold"), justify=LEFT)
+        self.__grade_combobox_textvar = StringVar()
+        self.__grade_combobox = frame_widget_picker.pickCombobox(
+            AddDataScreen.grade_combobox_values, self.__grade_combobox_textvar)
+        self.__grade_combobox.configure(
+            font=("Helvetica", "10", "bold"), width=10,justify=CENTER)
+
+        # Division Combobox
+        self.__division_label = frame_widget_picker.pickLabel(
+            'Division * : ')
+        self.__division_label.configure(
+            font=("Helvetica", "10", "bold"), justify=LEFT)
+        self.__division_combobox_textvar = StringVar()
+        self.__division_combobox = frame_widget_picker.pickCombobox(
+            AddDataScreen.division_combobox_values, self.__division_combobox_textvar)
+        self.__division_combobox.configure(
+            font=("Helvetica", "10", "bold"), width=5,justify=CENTER)
 
     def draw(self):
         # Cancel Button
@@ -285,12 +336,36 @@ class AddDataScreen(Screen):
         self.__reset_button.place(
             relx=0.465, rely=0.005, relwidth=0.07, relheight=0.09)
 
+        # Roll Number Entry
+        self.__rollno_label.grid(
+            row=0, column=0, sticky=W, pady=(20, 2), padx=(20, 0))
+        self.__rollno_entry.grid(
+            row=1, column=0, sticky=W, pady=(0, 5), padx=(20, 0))
+
+        # Full Name Entry
+        self.__fullname_label.grid(
+            row=2, column=0, sticky=W, pady=(5, 2), padx=(20, 0))
+        self.__fullname_entry.grid(
+            row=3, column=0, sticky=W, pady=(0, 5), padx=(20, 0))
+
+        # Grade Combobox
+        self.__grade_label.grid(
+            row=4, column=0, sticky=W, pady=(5, 2), padx=(20, 0))
+        self.__grade_combobox.grid(
+            row=5, column=0, sticky=W, pady=(0, 5), padx=(20, 0))
+
+        # Division Combobox
+        self.__division_label.grid(
+            row=4, column=1, sticky=W, pady=(5, 2), padx=(0, 0))
+        self.__division_combobox.grid(
+            row=5, column=1, sticky=W, pady=(0, 5), padx=(0, 0))
+
         # Canvas and Data Entry Frame
         self.__canvas_scrollable.place(
             relx=0.025, rely=0.1, relwidth=0.975, relheight=0.9)
         self.__scrollbar.place(relx=0.975, rely=0, relwidth=0.025, relheight=1)
         self.__dataentry_frame.place(
-            relx=0, rely=0, relwidth=0.975, relheight=1)
+            relx=0, rely=0, relwidth=0.97, relheight=0.98)
 
         super().draw()
 

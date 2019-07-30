@@ -7,6 +7,11 @@ class GUIPicker:
     def __init__(self, master):
         self.__master = master
 
+    # Label
+    def pickLabel(self,text):
+        label=Label(self.__master,text=text,bg=self.__master['bg'])
+        return label
+
     # Image Label
     def pickImageLabel(self, img):
         label = ttk.Label(self.__master, image=img)
@@ -26,7 +31,7 @@ class GUIPicker:
 
     # Entry
     def pickEntry(self, textvar=None):
-        entry = ttk.Entry(self.__master, foreground='grey',
+        entry = Entry(self.__master,
                           textvariable=textvar)
         return entry
 
