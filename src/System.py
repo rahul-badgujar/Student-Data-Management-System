@@ -16,19 +16,29 @@ class SystemManager:
         self._main_window.resizable(False,False)
 
         # Main Menu Screen
-        self.__mainmenu_screen=MainmenuScreen(self._main_window,self.mainmenuScreenCallback)
+        self.__mainmenu_screen=MainmenuScreen(self._main_window,self.screensReturnDataHandler)
 
     def run(self):
         self.__mainmenu_screen.draw()
         # Run the mainloop for Window
         self._main_window.mainloop()
 
-    def mainmenuScreenCallback(self,data):
-        if data[0] is 'EXIT':
-            self.__mainmenu_screen.clean()
-            self._main_window.destroy()
-        else:
-            print(data)
+    def screensReturnDataHandler(self,data):
+        self.__mainmenu_screen.clean()
+        if data[0] is 'MAINMENU_SCREEN':
+            if data[1] is 'EXIT':
+                self._main_window.destroy()
+            elif data[1] is 'SEARCH':
+                search_type = data[2][0]
+                search_entry = data[2][1]
+                print(search_type,search_entry)
+            elif data[1] is 'ADD':
+                print('No handling implemented yet for '+data[1])
+            elif data[1] is 'MODIFY':
+                print('No handling implemented yet for '+data[1])
+            elif data[1] is 'DELETE':
+                print('No handling implemented yet for '+data[1])
+                
 
 
 # for Unit Tests

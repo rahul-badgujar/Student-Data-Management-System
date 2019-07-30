@@ -146,16 +146,36 @@ class MainmenuScreen(Screen):
             '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[4]))
 
     def screenActionHandler(self, action_code):
+        data_to_send = ['MAINMENU_SCREEN']
         if action_code is MainmenuScreen.onscreen_actions[0]:
+            data_to_send.append('SEARCH')
             search_type=self.__search_type_textvar.get()
             search_entry=self.__search_entry_textvar.get()
             if search_entry is not '':
                 if search_type in MainmenuScreen.search_type_combobox_values:
-                    self._data_return_callback((action_code,(search_type,search_entry)))
+                    if search_type == MainmenuScreen.search_type_combobox_values[0] or search_type == MainmenuScreen.search_type_combobox_values[2]:
+                        try:
+                            temp_var=int(search_entry)
+                        except ValueError:
+                            messagebox.showerror(
+                                'Invalid '+search_type, search_type+' must be in Digits only')
+                            return None
+                    data_to_send.append((search_type,search_entry))
+                    self._data_return_callback(data_to_send)
                 else:
                     messagebox.showerror('Invalid Query','Search type is not valid')
-        else:
-            self._data_return_callback((action_code, None))
+        elif action_code is MainmenuScreen.onscreen_actions[1]:
+            data_to_send.append('ADD')
+            self._data_return_callback(data_to_send)
+        elif action_code is MainmenuScreen.onscreen_actions[2]:
+            data_to_send.append('MODIFY')
+            self._data_return_callback(data_to_send)
+        elif action_code is MainmenuScreen.onscreen_actions[3]:
+            data_to_send.append('DELETE')
+            self._data_return_callback(data_to_send)
+        elif action_code is MainmenuScreen.onscreen_actions[4]:
+            data_to_send.append('EXIT')
+            self._data_return_callback(data_to_send)
 
         
 
