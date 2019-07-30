@@ -263,6 +263,12 @@ class AddDataScreen(Screen):
         self.__reset_button.bind('<Leave>', lambda e: self.__reset_button.configure(
             image=self.__reset_button_image_normal))
 
+        # Canvas for Scrollality
+        self.__canvas_scrollable = Canvas(self)
+        self.__scrollbar = ttk.Scrollbar(
+            self.__canvas_scrollable, command=self.__canvas_scrollable.yview)
+        self.__canvas_scrollable.configure(yscrollcommand=self.__scrollbar.set)
+
     def draw(self):
         # Cancel Button
         self.__cancel_button.place(
@@ -275,6 +281,11 @@ class AddDataScreen(Screen):
         # Reset Button
         self.__reset_button.place(
             relx=0.465, rely=0.01, relwidth=0.07, relheight=0.09)
+
+        # Canvas and Data Entry Frame
+        self.__canvas_scrollable.place(
+            relx=0.0, rely=0.1, relwidth=1, relheight=0.9)
+        self.__scrollbar.pack(side=RIGHT, fill=Y)
 
         super().draw()
 
