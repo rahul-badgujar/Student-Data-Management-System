@@ -16,12 +16,15 @@ class SystemManager:
         self._main_window.resizable(False,False)
 
         # Main Menu Screen
-        self.__mainmenu_screen=MainmenuScreen(self._main_window)
+        self.__mainmenu_screen=MainmenuScreen(self._main_window,self.mainmenuScreenCallback)
 
     def run(self):
         self.__mainmenu_screen.draw()
         # Run the mainloop for Window
         self._main_window.mainloop()
+
+    def mainmenuScreenCallback(self,data):
+        print(data)
 
 
 # for Unit Tests
