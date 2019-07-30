@@ -24,8 +24,8 @@ class SystemManager:
         self._main_window.mainloop()
 
     def mainmenuScreenCallback(self,data):
-        self.__mainmenu_screen.clean()
         if data[0] is 'EXIT':
+            self.__mainmenu_screen.clean()
             self._main_window.destroy()
         else:
             print(data)

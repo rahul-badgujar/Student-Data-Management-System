@@ -146,9 +146,7 @@ class MainmenuScreen(Screen):
             '<Button-1>', lambda e: self.screenActionHandler(MainmenuScreen.onscreen_actions[4]))
 
     def screenActionHandler(self, action_code):
-        if action_code is MainmenuScreen.onscreen_actions[4]:
-            self._data_return_callback((action_code,None))
-        elif action_code is MainmenuScreen.onscreen_actions[0]:
+        if action_code is MainmenuScreen.onscreen_actions[0]:
             search_type=self.__search_type_textvar.get()
             search_entry=self.__search_entry_textvar.get()
             if search_entry is not '':
@@ -156,6 +154,8 @@ class MainmenuScreen(Screen):
                     self._data_return_callback((action_code,(search_type,search_entry)))
                 else:
                     messagebox.showerror('Invalid Query','Search type is not valid')
+        else:
+            self._data_return_callback((action_code, None))
 
         
 
