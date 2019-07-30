@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from datetime import date
+from calendar import monthrange
 from Utilities import GUIPicker
 
 
@@ -228,6 +230,8 @@ class AddDataScreen(Screen):
     grade_combobox_values = ('I', 'II', 'III', 'IV',
                              'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII')
     division_combobox_values = ('A', 'B', 'C', 'D', 'E', 'F')
+    months = ('January', 'February', 'March', 'April', 'May', 'June',
+              'July', 'August', 'September', 'October', 'November', 'December')
 
     def __init__(self, root, callback):
         super().__init__(root, callback)
@@ -310,7 +314,7 @@ class AddDataScreen(Screen):
         self.__grade_combobox = frame_widget_picker.pickCombobox(
             AddDataScreen.grade_combobox_values, self.__grade_combobox_textvar)
         self.__grade_combobox.configure(
-            font=("Helvetica", "10", "bold"), width=10,justify=CENTER)
+            font=("Helvetica", "10", "bold"), width=10, justify=CENTER)
 
         # Division Combobox
         self.__division_label = frame_widget_picker.pickLabel(
@@ -321,7 +325,48 @@ class AddDataScreen(Screen):
         self.__division_combobox = frame_widget_picker.pickCombobox(
             AddDataScreen.division_combobox_values, self.__division_combobox_textvar)
         self.__division_combobox.configure(
-            font=("Helvetica", "10", "bold"), width=5,justify=CENTER)
+            font=("Helvetica", "10", "bold"), width=5, justify=CENTER)
+
+        # DOB
+        self.__dob_label = frame_widget_picker.pickLabel(
+            'Date of Birth (YYYY MM DD) * : ')
+        self.__dob_label.configure(
+            font=("Helvetica", "10", "bold"), justify=LEFT)
+
+        self.__year_combobox_textvar = StringVar()
+        year_values = []
+        for i in range(20):
+            year_values.append(date.today().year-i)
+        self.__year_combobox = frame_widget_picker.pickCombobox(
+            None, self.__year_combobox_textvar)
+        self.__year_combobox.configure(
+            font=("Helvetica", "10", "bold"), width=20, justify=CENTER, values=year_values)
+        self.__year_combobox.current(0)
+
+        self.__month_combobox_textvar = StringVar()
+        self.__month_combobox = frame_widget_picker.pickCombobox(
+            AddDataScreen.months, self.__month_combobox_textvar)
+        self.__month_combobox.configure(
+            font=("Helvetica", "10", "bold"), width=10, justify=CENTER)
+        self.__month_combobox.current(date.today().month-1)
+
+        def dates_in_months():
+            month_num = self.__month_combobox.current()+1
+            year_num = int(self.__year_combobox_textvar.get())
+            max_dates = monthrange(year_num, month_num)[1]
+            dates = []
+            for i in range(max_dates):
+                dates.append(i+1)
+            return dates
+        self.__month_combobox.bind(
+            '<<ComboboxSelected>>', lambda e: self.__day_combobox.configure(values=dates_in_months()))
+
+        self.__day_combobox_textvar = StringVar()
+        self.__day_combobox = frame_widget_picker.pickCombobox(
+            dates_in_months(), self.__day_combobox_textvar)
+        self.__day_combobox.configure(
+            font=("Helvetica", "10", "bold"), width=5, justify=CENTER)
+        self.__day_combobox.current(date.today().day-1)
 
     def draw(self):
         # Cancel Button
@@ -359,6 +404,17 @@ class AddDataScreen(Screen):
             row=4, column=1, sticky=W, pady=(5, 2), padx=(0, 0))
         self.__division_combobox.grid(
             row=5, column=1, sticky=W, pady=(0, 5), padx=(0, 0))
+
+        # DOB
+        self.__dob_label.grid(
+            row=6, column=0, sticky=W, pady=(5, 2), padx=(20, 0))
+
+        self.__year_combobox.grid(
+            row=7, column=0, sticky=W, pady=(0, 5), padx=(20, 0))
+        self.__month_combobox.grid(
+            row=7, column=1, sticky=W, pady=(0, 5), padx=(0, 5))
+        self.__day_combobox.grid(
+            row=7, column=2, sticky=W, pady=(0, 5), padx=(5, 0))
 
         # Canvas and Data Entry Frame
         self.__canvas_scrollable.place(
