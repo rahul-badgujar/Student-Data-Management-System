@@ -1,4 +1,4 @@
-Student Data Management System
+Student Data Management System (Incomplete yet)
 - Python Project
 - GUI Interface with Tkinter 8.5
 - Database support with SQLite3
