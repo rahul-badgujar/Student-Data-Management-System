@@ -8,8 +8,8 @@ class GUIPicker:
         self.__master = master
 
     # Label
-    def pickLabel(self,text):
-        label=Label(self.__master,text=text,bg=self.__master['bg'])
+    def pickLabel(self, text):
+        label = Label(self.__master, text=text, bg=self.__master['bg'])
         return label
 
     # Image Label
@@ -32,7 +32,7 @@ class GUIPicker:
     # Entry
     def pickEntry(self, textvar=None):
         entry = Entry(self.__master,
-                          textvariable=textvar)
+                      textvariable=textvar)
         return entry
 
     # Spinbox
@@ -46,6 +46,12 @@ class GUIPicker:
         combobox = ttk.Combobox(
             self.__master, values=possible_values, textvariable=textvar)
         return combobox
+
+    # Radiobutton
+    def pickRadioButton(self, text, value, textvar=None):
+        radio_button = Radiobutton(
+            self.__master, text=text, value=value, textvariable=textvar)
+        return radio_button
 
 
 if __name__ == "__main__":

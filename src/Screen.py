@@ -230,8 +230,9 @@ class AddDataScreen(Screen):
     grade_combobox_values = ('I', 'II', 'III', 'IV',
                              'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII')
     division_combobox_values = ('A', 'B', 'C', 'D', 'E', 'F')
-    months = ('January', 'February', 'March', 'April', 'May', 'June',
-              'July', 'August', 'September', 'October', 'November', 'December')
+    month_values = ('January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December')
+    gender_values = ('Male', 'Female', 'Other')
 
     def __init__(self, root, callback):
         super().__init__(root, callback)
@@ -345,12 +346,12 @@ class AddDataScreen(Screen):
 
         self.__month_combobox_textvar = StringVar()
         self.__month_combobox = frame_widget_picker.pickCombobox(
-            AddDataScreen.months, self.__month_combobox_textvar)
+            AddDataScreen.month_values, self.__month_combobox_textvar)
         self.__month_combobox.configure(
             font=("Helvetica", "10", "bold"), width=10, justify=CENTER)
         self.__month_combobox.current(date.today().month-1)
 
-        def dates_in_months():
+        def dates_in_month():
             month_num = self.__month_combobox.current()+1
             year_num = int(self.__year_combobox_textvar.get())
             max_dates = monthrange(year_num, month_num)[1]
@@ -359,14 +360,26 @@ class AddDataScreen(Screen):
                 dates.append(i+1)
             return dates
         self.__month_combobox.bind(
-            '<<ComboboxSelected>>', lambda e: self.__day_combobox.configure(values=dates_in_months()))
+            '<<ComboboxSelected>>', lambda e: self.__day_combobox.configure(values=dates_in_month()))
 
         self.__day_combobox_textvar = StringVar()
         self.__day_combobox = frame_widget_picker.pickCombobox(
-            dates_in_months(), self.__day_combobox_textvar)
+            dates_in_month(), self.__day_combobox_textvar)
         self.__day_combobox.configure(
             font=("Helvetica", "10", "bold"), width=5, justify=CENTER)
         self.__day_combobox.current(date.today().day-1)
+
+        # Genders Combobox
+        self.__gender_label = frame_widget_picker.pickLabel(
+            'Gender * : ')
+        self.__gender_label.configure(
+            font=("Helvetica", "10", "bold"), justify=LEFT)
+        self.__gender_combobox_textvar = StringVar()
+        self.__gender_combobx = frame_widget_picker.pickCombobox(
+            AddDataScreen.gender_values, self.__gender_combobox_textvar)
+        self.__gender_combobx.configure(
+            width=10, justify=CENTER, font=("Helvetica", "10", "bold"))
+        self.__gender_combobx.current(0)
 
     def draw(self):
         # Cancel Button
@@ -415,6 +428,12 @@ class AddDataScreen(Screen):
             row=7, column=1, sticky=W, pady=(0, 5), padx=(0, 5))
         self.__day_combobox.grid(
             row=7, column=2, sticky=W, pady=(0, 5), padx=(5, 0))
+
+        # Gender Radiobuttons
+        self.__gender_label.grid(
+            row=8, column=0, sticky=W, pady=(5, 2), padx=(20, 0))
+        self.__gender_combobx.grid(
+            row=9, column=0, sticky=W, pady=(0, 5), padx=(20, 0))
 
         # Canvas and Data Entry Frame
         self.__canvas_scrollable.place(
